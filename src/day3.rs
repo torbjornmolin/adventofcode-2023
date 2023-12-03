@@ -63,8 +63,101 @@ impl Day3 {
     pub fn sum_part_2(self, content: &str) -> u32 {
         let mut result: u32 = 0;
 
+        let map = Utils::text_to_2d_array(content);
+
+        for (line_no, map_line) in map.iter().enumerate() {
+            let current_number = Vec::<char>::new();
+            for (char_index, c) in map_line.iter().enumerate() {
+                match c {
+                    '*' => {
+                        let ratio_components = get_adjacent_numbers(&map, line_no, char_index);
+                        if ratio_components.len() == 2 {
+                            result += ratio_components[0] * ratio_components[1];
+                        }
+                    }
+                    _ => (),
+                }
+            }
+            if current_number.len() > 0 {
+                let number: String = current_number.into_iter().collect();
+                let number: u32 = number.parse().expect("Unable to parse string to number");
+                result += number;
+            }
+        }
+
         result
     }
+}
+
+fn get_adjacent_numbers(map: &Vec<Vec<char>>, line_no: usize, char_index: usize) -> Vec<u32> {
+    let mut result = Vec::new();
+
+    // line above
+    if line_no > 0 {
+        let target_line_no = line_no - 1;
+        let target_line = &map[target_line_no];
+
+        if target_line[char_index].is_digit(10) {
+            result.push(Utils::get_numer_at_coordinate(
+                map,
+                target_line_no,
+                char_index,
+            ));
+        } else {
+            // if middle is a number, left and right would be the same number
+            if char_index > 0 && target_line[char_index - 1].is_digit(10) {
+                result.push(Utils::get_numer_at_coordinate(
+                    map,
+                    target_line_no,
+                    char_index - 1,
+                ));
+            }
+
+            if char_index + 1 < target_line.len() && target_line[char_index + 1].is_digit(10) {
+                result.push(Utils::get_numer_at_coordinate(
+                    map,
+                    target_line_no,
+                    char_index + 1,
+                ));
+            }
+        }
+    }
+    // adjacent
+    if char_index > 0 && map[line_no][char_index - 1].is_digit(10) {
+        result.push(Utils::get_numer_at_coordinate(map, line_no, char_index - 1));
+    }
+    if char_index + 1 < map[line_no].len() && map[line_no][char_index + 1].is_digit(10) {
+        result.push(Utils::get_numer_at_coordinate(map, line_no, char_index + 1));
+    }
+
+    //  line bellow
+    if line_no + 1 < map.len() {
+        let target_line_no = line_no + 1;
+        let target_line = &map[target_line_no];
+        if target_line[char_index].is_digit(10) {
+            result.push(Utils::get_numer_at_coordinate(map, line_no + 1, char_index));
+        } else {
+            // if middle is a number, left and right would be the same number
+
+            if char_index > 0 && target_line[char_index - 1].is_digit(10) {
+                result.push(Utils::get_numer_at_coordinate(
+                    map,
+                    target_line_no,
+                    char_index - 1,
+                ));
+            }
+
+            if char_index + 1 < target_line.len() && target_line[char_index + 1].is_digit(10) {
+                result.push(Utils::get_numer_at_coordinate(
+                    map,
+                    target_line_no,
+                    char_index + 1,
+                ));
+            }
+        }
+    }
+
+    result
 }
 
 fn check_adjacent_symbol(map: &Vec<Vec<char>>, line_no: usize, char_index: usize) -> bool {
