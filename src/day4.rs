@@ -1,3 +1,4 @@
+use core::num;
 use std::{fs};
 
 use regex::Regex;
@@ -28,8 +29,6 @@ impl Day4 {
 
         for line in lines {
             let parts: Vec<&str> = line.split(":").collect();
-
-            let game_part = parts[0];
             let score_parts = parts[1];
 
             let matches: u32 = get_matches(score_parts);
@@ -43,10 +42,30 @@ impl Day4 {
     }
 
     pub fn sum_part_2(self, content: &str) -> u32 {
-        let mut result: u32 = 0;
-        result
+        let lines: Vec<&str> = content.split("\n").collect();
+        let mut number_of_cards: Vec<u32> = content.split("\n").map(|_| 1).collect();
+
+        for (index, line) in lines.iter().enumerate() {
+            let current_num_cards = number_of_cards[index];
+
+            let parts: Vec<&str> = line.split(":").collect();
+            let score_parts = parts[1];
+
+            let score = get_matches(score_parts);
+
+            let start = index +1;
+            let usize_score: usize = score.try_into().expect("Could not convert u32 to usize");
+            let end = start + usize_score;
+            
+            for n in start..end {
+                number_of_cards[n] += current_num_cards;
+            }
+        }
+
+        number_of_cards.iter().map(|i| i).sum()
+        }
     }
-}
+
 
 fn get_matches(score_parts: &str) -> u32 {
     let mut result = 0;
@@ -63,7 +82,6 @@ fn get_matches(score_parts: &str) -> u32 {
     for my in &my_numbers {
         for winning in &winning_matches {
             if my == winning {
-                println!("Match: {} - {}", my, winning);
                 result+=1;
             }
         }
@@ -93,17 +111,13 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";
 
     #[test]
     fn correct_part2_example_data() {
-        let input = "467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598..";
+        let input = "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
+Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
+Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
+Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
+Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";
         let sut = Day4 {};
-        assert_eq!(467835, sut.sum_part_2(input));
+        assert_eq!(30, sut.sum_part_2(input));
     }
 }
