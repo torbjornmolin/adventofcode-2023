@@ -1,9 +1,5 @@
-use core::num;
-use std::fs;
-
 use regex::Regex;
-
-use crate::utils::Utils;
+use std::fs;
 
 #[derive(Clone, Copy)]
 pub struct Day5;
@@ -74,10 +70,40 @@ impl Day5 {
         result
     }
 
-    pub fn sum_part_2(self, content: &str) -> u32 {
-        let lines: Vec<&str> = content.split("\n").collect();
+    pub fn sum_part_2(self, content: &str) -> u64 {
+        let mut result = 0;
 
-        0
+        let parts: Vec<&str> = content.split("\n\n").collect();
+
+        let seed_ranges: Vec<(u64, u64)> = get_seed_number_ranges(parts[0]);
+
+        let mut maps: Vec<Vec<RangeMap>> = Vec::new();
+        get_all_mappings(parts, &mut maps);
+
+        for seed_range in seed_ranges {
+            for seed in seed_range.0..(seed_range.0 + seed_range.1 - 1) {
+                let mut mapped_seed_no = seed;
+                for map in &maps {
+                    for mapping in map {
+                        let mapped = mapping.do_mapping(mapped_seed_no);
+                        match mapped {
+                            Some(mapped_number) => {
+                                mapped_seed_no = mapped_number;
+                                break;
+                            }
+
+                            None => (),
+                        }
+                    }
+                }
+                if result == 0 || mapped_seed_no < result {
+                    result = mapped_seed_no;
+                }
+                //println!("Mapped seed {} to {}", seed, mapped_seed_no);
+            }
+        }
+
+        result
     }
 }
 
@@ -116,6 +142,21 @@ fn get_seed_numbers(seed_line: &str) -> Vec<u64> {
         .map(|m| m.as_str().parse().expect("Could not parse seed number"))
         .collect();
 
+    seeds
+}
+
+fn get_seed_number_ranges(seed_line: &str) -> Vec<(u64, u64)> {
+    let re = Regex::new(r"\d+").expect("Could not create regex.");
+    let numbers: Vec<u64> = re
+        .find_iter(seed_line)
+        .map(|m| m.as_str().parse().expect("Could not parse seed number"))
+        .collect();
+
+    let mut seeds = Vec::new();
+
+    for c in numbers.chunks(2) {
+        seeds.push((c[0], c[1]));
+    }
     seeds
 }
 
@@ -199,6 +240,6 @@ humidity-to-location map:
 60 56 37
 56 93 4";
         let sut = Day5 {};
-        assert_eq!(0, sut.sum_part_2(input));
+        assert_eq!(46, sut.sum_part_2(input));
     }
 }
