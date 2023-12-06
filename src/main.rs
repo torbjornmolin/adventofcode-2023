@@ -1,12 +1,12 @@
 //use day1::Day1;
-use day5::Day5;
+use day6::Day6;
 
-pub mod day5;
+pub mod day6;
 pub mod utils;
 
 fn main() {
-    let day5 = Day5;
+    let day6 = Day6;
 
-    day5.run_part_1();
-    day5.run_part_2();
+    day6.run_part_1();
+    day6.run_part_2();
 }
