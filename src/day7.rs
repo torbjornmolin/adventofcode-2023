@@ -53,7 +53,6 @@ impl Day7 {
         
         let mut result:u64 = 0;
         for (index, hand) in hands.iter().enumerate() {
-            println!("{:?}", hand);
             result += (index +1) as u64 * hand.bid as u64;
         }
 
