@@ -7,39 +7,42 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'adventofcode2023'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=adventofcode2023",
-                    "--package=adventofcode2023"
-                ],
-                "filter": {
-                    "name": "adventofcode2023",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'adventofcode2023'",
+            "name": "Cargo test",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=adventofcode2023",
-                    "--package=adventofcode2023"
-                ],
-                "filter": {
-                    "name": "adventofcode2023",
-                    "kind": "bin"
-                }
+                    "--lib"
+                ]
             },
+            "args": []
+        },
+        {
+            "name": "(Windows) Launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/adventofcode2023.exe",
             "args": [],
-            "cwd": "${workspaceFolder}"
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
+        },
+        {
+            "name": "(Windows) Launch tests",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/adventofcode2023.exe",
+            "args": [
+                "test",
+                "--no-run",
+                "--lib"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
         }
+
     ]
 }
