@@ -9,7 +9,7 @@ use crate::utils::Utils;
 pub struct Day4;
 
 impl Day4 {
-    const PATH: &str = "input/day4.txt";
+    const PATH: &'static str = "input/day4.txt";
     pub fn run_part_1(&self) {
         let contents =
             fs::read_to_string(Self::PATH).expect("Should have been able to read the file");

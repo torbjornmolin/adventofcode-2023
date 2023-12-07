@@ -22,7 +22,7 @@ impl RangeMap {
 }
 
 impl Day5 {
-    const PATH: &str = "input/day5.txt";
+    const PATH: &'static str = "input/day5.txt";
     pub fn run_part_1(&self) {
         let contents =
             fs::read_to_string(Self::PATH).expect("Should have been able to read the file");

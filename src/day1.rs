@@ -5,7 +5,7 @@ use std::fs;
 pub struct Day1;
 
 impl Day1 {
-    const PATH: &str = "input/day1.txt";
+    const PATH: &'static str = "input/day1.txt";
     pub fn run_part_1(&self) {
         let contents = fs::read_to_string(Self::PATH)
         .expect("Should have been able to read the file");

@@ -15,7 +15,7 @@ pub struct Hand {
 pub struct Day7;
 
 impl Day7 {
-    const PATH: &str = "input/day7.txt";
+    const PATH: &'static str = "input/day7.txt";
     pub fn run_part_1(&self) {
         let contents =
             fs::read_to_string(Self::PATH).expect("Should have been able to read the file");
