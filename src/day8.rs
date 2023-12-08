@@ -12,8 +12,6 @@ struct MazeLine {
     position: usize,
     is_part1_final: bool,
     position_string: String,
-    left: String,
-    right: String,
 }
 
 impl MazeLine {
@@ -61,8 +59,6 @@ impl MazeLine {
             right_index: *right_index,
             position: *position_index,
             position_string: position.clone(),
-            left: left.clone(),
-            right: right.clone(),
             is_part1_final: &position == "ZZZ",
         }
     }
@@ -135,7 +131,6 @@ impl Day8 {
             .iter()
             .find(|m| m.position_string == "AAA")
             .expect("No first element found");
-        let mut last_cycle_start = 0;
         loop {
             let instruction = instructions.fetch_next();
             let mut next_index: Option<usize> = None;
@@ -267,16 +262,5 @@ ZZZ = (ZZZ, ZZZ)";
             assert_eq!('R', sut.fetch_next());
             assert_eq!('L', sut.fetch_next());
         }
-
-        //         #[test]
-        //         fn correct_part2_example_data() {
-        //             let input = "LLR
-
-        // AAA = (BBB, BBB)
-        // BBB = (AAA, ZZZ)
-        // ZZZ = (ZZZ, ZZZ)";
-        //             let sut = Day8 {};
-        //             assert_eq!(5905, sut.sum_part_2(input));
-        //         }
     }
 }
