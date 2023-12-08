@@ -7,16 +7,26 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Cargo test",
+            "name": "Cargo launch",
             "cargo": {
                 "args": [
-                    "test",
-                    "--no-run",
-                    "--lib"
+                    "build",
                 ]
             },
             "args": []
         },
+    {
+        "type": "lldb",
+        "request": "launch",
+        "name": "Cargo test",
+        "cargo": {
+            "args": [
+                "test",
+                "--no-run",
+            ]
+        },
+        "args": []
+    },
         {
             "name": "(Windows) Launch",
             "type": "cppvsdbg",
