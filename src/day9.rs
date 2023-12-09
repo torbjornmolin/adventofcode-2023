@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::{collections::HashMap, fs};
+use std::fs;
 
 #[derive(Clone, Copy)]
 pub struct Day9;
